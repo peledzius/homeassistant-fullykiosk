@@ -109,6 +109,12 @@ class FullySensor(CoordinatorEntity, SensorEntity):
 
         if self._sensor in STORAGE_SENSORS:
             return round(self.coordinator.data[self._sensor] * 0.000001, 1)
+        
+        if self._sensor == "lastAppStart":
+            fullyDateString = self.coordinator.data[self._sensor] + datetime.now().astimezone().strftime('%z')
+            convertedDate = datetime.strptime(fullyDateString, '%d/%m/%Y %H:%M:%S%z').isoformat()
+            return convertedDate
+
 
         return self.coordinator.data.get(self._sensor)
 
